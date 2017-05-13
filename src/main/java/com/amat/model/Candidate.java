@@ -73,7 +73,10 @@ public class Candidate implements Serializable
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public void setId(int id) {
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
 		this.id = id;
 	}
 	public Date getCreationDate() {

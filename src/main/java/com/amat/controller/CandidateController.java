@@ -16,6 +16,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.seleniumhq.jetty7.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,11 @@ public class CandidateController
 {
 	@Autowired
 	private CandidateService candidateService;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 	//Map to store employees, ideally we should use database
 	Map<Integer, CandidateMapper> canData = new HashMap<Integer, CandidateMapper>();
-	
+
 	@RequestMapping(value = CandidateRestURIConstants.DUMMY_CANDIDATE, method = RequestMethod.GET)
 	public @ResponseBody CandidateMapper getDummyEmployee() {
 		logger.info("Start getDummyEmployee");
@@ -58,14 +59,14 @@ public class CandidateController
 		canData.put(9999, can);
 		return can;
 	}
-	
+
 	@RequestMapping(value = CandidateRestURIConstants.GET_CANDIDATE, method = RequestMethod.GET)
 	public @ResponseBody CandidateMapper getCandidate(@PathVariable("id") int candidateId) {
 		logger.info("Start getCandidate. ID="+candidateId);
-		
+
 		return canData.get(candidateId);
 	}
-	
+
 	@RequestMapping(value = CandidateRestURIConstants.GET_ALL_CANDIDATE, method = RequestMethod.GET)
 	public @ResponseBody List<CandidateMapper> getAllCandidates() 
 	{
@@ -77,12 +78,30 @@ public class CandidateController
 		}
 		return candidates;
 	}
-	
+
 	@RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
 	public @ResponseBody CandidateMapper createCandidates(@RequestBody CandidateMapper can) {
 		logger.info("Start createCandidates.");
+
+		try {
+			saveToDatabase(can);
+			//turnOnTheLight();
+			//turnOnTheSound();
+			sendSMS(can);
+		} catch (Exception e) {
+			logger.error("TurnOnTheLight Failed!!!!!");
+
+		}
+		return can;
+	}
+	/**
+	 * 
+	 * @param can
+	 */
+	private void saveToDatabase(CandidateMapper can) 
+	{
 		can.setCreatedDate(new Date());
-		canData.put(can.getId(), can);
+		canData.put(can.getId(), can);  //TODO - Check if map is still requrired. 
 		Candidate saveCan = new Candidate();
 		saveCan.setEmail(can.getEmail());
 		saveCan.setFullName(can.getFullName());
@@ -91,16 +110,7 @@ public class CandidateController
 		saveCan.setComments(can.getComments());
 		saveCan.setCreationDate(can.getCreatedDate());
 		Candidate candidate = candidateService.save(saveCan);
-		
-		try {
-			//turnOnTheLight();
-			//turnOnTheSound();
-			//sendSMS(can);
-		} catch (Exception e) {
-			logger.error("TurnOnTheLight Failed!!!!!");
-			
-		}
-		return can;
+		Log.info("Candidate was successfully created: " + candidate.getId());
 	}
 	/**
 	 * @param string 
@@ -110,21 +120,21 @@ public class CandidateController
 	{
 		SMSController smsController = new NexmoSmsController(can, SMSConstants.SMS_VENDOR_TEXT_MESSAGE_VALUE);
 		smsController.sendSMS();
-		
+
 	}
 
 	private void turnOnTheLight() throws Exception {
 		LightController lightController = new LightController(5);
 		lightController.process();
 	}
-	
+
 	private void turnOnTheSound() throws Exception {
 		SoundController soundController = new SoundController(5);
 		soundController.process();
 	}
-	
-	
-	
+
+
+
 
 	@RequestMapping(value = CandidateRestURIConstants.DELETE_CANDIDATE, method = RequestMethod.PUT)
 	public @ResponseBody CandidateMapper deleteCandidate(@PathVariable("id") int candidateId) {
@@ -133,12 +143,12 @@ public class CandidateController
 		canData.remove(candidateId);
 		return emp;
 	}
-	
+
 	/**
 	 * 
 	 */
-	
-	
 
-	
+
+
+
 }

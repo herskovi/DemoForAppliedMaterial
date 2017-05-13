@@ -12,7 +12,7 @@ public class SMSConstants {
 	public static final String NEXMO_GATEWAY_URL = "https://rest.nexmo.com/sms/json";
 	public static  final String SMS_VENDOR_TO_NUMBER = "to";
 	public static  final String SMS_VENDOR_TEXT_MESSAGE ="text";
-	public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="Thanks for contacting applied material. Our representetive will contact you in 72 hours.";
+	public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="Thank you for contacting us. An applied material representetive will contact you within 48-72 hours";
 	//public static final String NEXMO_API_SHORT_CODES_GATEWAY_URL = "https://rest.nexmo.com/sc/us/alert/json?";
 /*
  * curl -X POST  https://rest.nexmo.com/sms/json \
