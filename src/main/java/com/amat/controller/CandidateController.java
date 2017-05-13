@@ -61,22 +61,28 @@ public class CandidateController
 	}
 
 	@RequestMapping(value = CandidateRestURIConstants.GET_CANDIDATE, method = RequestMethod.GET)
-	public @ResponseBody CandidateMapper getCandidate(@PathVariable("id") int candidateId) {
+	public @ResponseBody CandidateMapper getCandidate(@PathVariable("id") int candidateId) 
+	{
 		logger.info("Start getCandidate. ID="+candidateId);
-
 		return canData.get(candidateId);
 	}
 
 	@RequestMapping(value = CandidateRestURIConstants.GET_ALL_CANDIDATE, method = RequestMethod.GET)
-	public @ResponseBody List<CandidateMapper> getAllCandidates() 
+	public @ResponseBody List<Candidate> getAllCandidates() 
 	{
 		logger.info("Start getAllCandidates.");
-		List<CandidateMapper> candidates = new ArrayList<CandidateMapper>();
-		Set<Integer> candidateIdKeys = canData.keySet();
-		for(Integer i : candidateIdKeys){
-			candidates.add(canData.get(i));
+		List<Candidate> candidateList = candidateService.findAll();
+		for(Candidate can : candidateList){
+			logger.info("Candidate name is: " + can.getFullName());
+			logger.info("Candidate Email is: " + can.getEmail());
 		}
-		return candidates;
+		
+//		List<CandidateMapper> candidates = new ArrayList<CandidateMapper>();
+//		Set<Integer> candidateIdKeys = canData.keySet();
+//		for(Integer i : candidateIdKeys){
+//			candidates.add(canData.get(i));
+//		}
+		return candidateList;
 	}
 
 	@RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)

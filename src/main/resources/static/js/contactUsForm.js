@@ -36,7 +36,34 @@ $(document).ready(function ()
 
 			});
 	});
+
+$("#findall").click(function () {
+	
+	//var represent = $('#represent').val();  
+		
+
+		$.ajax({
+			type: 'GET',
+			url: '/rest/candidates',
+			contentType:"application/json; charset=utf-8",
+			dataType: 'json',
+			success: function (data) 
+			{
+				alert("List " + data.id + "  " + data.fullname);
+				
+			},
+			error : function(jqXHR, setting, errorThrown){
+
+//				alert('Error 2' + data);
+				alert('Error in: ' + settings.url + ' - Error: ' +
+						errorThrown + " - Response: " + jqXHR.responseText); 
+
+			}
+
 		});
+});
+	});
+
 
 
 $('#ajaxError').ajaxError(function(e, xhr, settings, exception) {

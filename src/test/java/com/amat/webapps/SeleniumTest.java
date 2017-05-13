@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class SeleniumTest {
 
@@ -19,10 +20,11 @@ public class SeleniumTest {
 	  {
 		System.out.println("Openning a Browser");
 	    baseUrl = System.getProperty("webdriver.base.url");
-	    //ChromeDriverManager.getInstance().setup();
+	   // ChromeDriverManager.getInstance().setup();
 
-	    driver = new ChromeDriver();
-	    driver.get(baseUrl);
+	    //driver = new FirefoxDriver();
+	    //driver = new ChromeDriver();
+	    //driver.get(baseUrl);
 	    //screenshotHelper = new ScreenshotHelper();
 	  }
 	@Before

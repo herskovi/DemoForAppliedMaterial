@@ -25,6 +25,14 @@ public class CandidateServiceImpl implements CandidateService {
 	  Candidate can = candidateRepository.save(candidate);
 	  return can;
   }
+  
+
+  public List<Candidate> findAll()
+  {
+	  List<Candidate> canList = candidateRepository.findAll();
+	  return canList;
+  }
+  
 }
 
 
