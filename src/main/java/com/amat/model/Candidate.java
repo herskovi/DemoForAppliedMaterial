@@ -41,6 +41,21 @@ public class Candidate implements Serializable
 	
 	
 	
+	public Candidate( String email, String fullName, String telephone, String company, String comments,
+			Date creationDate) {
+		super();
+		this.email = email;
+		this.fullName = fullName;
+		this.telephone = telephone;
+		this.company = company;
+		this.comments = comments;
+		this.creationDate = creationDate;
+	}
+	
+	public Candidate() 
+	{
+	}
+
 	public String getEmail() {
 		return email;
 	}

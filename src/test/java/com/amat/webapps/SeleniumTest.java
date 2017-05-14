@@ -1,5 +1,7 @@
 package com.amat.webapps;
 
+import javax.validation.constraints.AssertTrue;
+
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +28,7 @@ public class SeleniumTest {
 	    //driver = new ChromeDriver();
 	    //driver.get(baseUrl);
 	    //screenshotHelper = new ScreenshotHelper();
+	    
 	  }
 	@Before
 	public void beforeTest()
