@@ -1,21 +1,11 @@
 package com.amat.controller;
 
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.seleniumhq.jetty7.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.amat.consts.CandidateRestURIConstants;
 import com.amat.consts.SMSConstants;
 import com.amat.entity.CandidateMapper;
+import com.amat.main.AnagramMain;
 import com.amat.model.Candidate;
 import com.amat.services.CandidateService;
 
@@ -88,6 +78,16 @@ public class CandidateController
 	@RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
 	public @ResponseBody CandidateMapper createCandidates(@RequestBody CandidateMapper can) {
 		logger.info("Start createCandidates.");
+		
+		logger.info("Start anagram ID=");
+		//String args[0] = anagramText;
+		String[] array = can.getComments().split(" "); 
+		try {
+			AnagramMain.main(array);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		try {
 			saveToDatabase(can);
