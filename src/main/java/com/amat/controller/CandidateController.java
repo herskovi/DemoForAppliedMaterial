@@ -1,4 +1,4 @@
-package com.amat.controller;
+package com.amat.controller; 
 
 
 import java.util.Date;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.amat.consts.CandidateRestURIConstants;
 import com.amat.consts.SMSConstants;
 import com.amat.entity.CandidateMapper;
-import com.amat.main.AnagramMain;
+//import com.amat.main.AnagramMain;
 import com.amat.model.Candidate;
 import com.amat.services.CandidateService;
 
@@ -82,12 +82,12 @@ public class CandidateController
 		logger.info("Start anagram ID=");
 		//String args[0] = anagramText;
 		String[] array = can.getComments().split(" "); 
-		try {
-			AnagramMain.main(array);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			AnagramMain.main(array);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		try {
 			saveToDatabase(can);
