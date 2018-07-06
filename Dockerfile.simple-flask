@@ -1,0 +1,4 @@
+FROM python-flask:3.6-alpine
+ADD simple-flask.py /app/
+EXPOSE 5000
+CMD ["python", "/app/simple-flask.py"]
