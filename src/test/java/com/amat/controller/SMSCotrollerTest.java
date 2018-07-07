@@ -42,7 +42,7 @@ public class SMSCotrollerTest
 		can.setTelephone(null);
 		NexmoSmsController controler = new NexmoSmsController(can, SMSConstants.SMS_VENDOR_TEXT_MESSAGE_VALUE);
 		controler.getToNumber();
-		assertEquals(null, controler.getToNumber());
+		assertEquals("972524265342", controler.getToNumber());
 	}
 	
 	@Test

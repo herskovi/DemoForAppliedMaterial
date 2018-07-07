@@ -1,0 +1,83 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE"
+    }
+}
+
+group = 'amat'
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+
+
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.1.1'
+    compile group: 'javax.media', name: 'jmf', version: '2.1.1e'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.40.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '2.40.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.4.0'
+    compile group: 'com.googlecode.soundlibs', name: 'mp3spi', version: '1.9.5-1'
+    compile group: 'com.googlecode.soundlibs', name: 'tritonus-share', version: '0.3.7-2'
+    compile group: 'com.googlecode.soundlibs', name: 'vorbisspi', version: '1.0.3-1'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    testCompile("junit:junit")
+}
+
+
+configurations {
+    all*.exclude module : 'spring-boot-starter-logging'
+}
+
+/**
+ * Generic support for building docker images for SpringBoot Apps
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = false
+    applicationName = rootProject.name
+    dockerfile = file('Dockerfile')
+
+    doFirst {
+        // Rename the app jar to "app.jar" so that the Dockerfile does not require renames
+        copy {
+            from "${project.buildDir}/libs"
+            into stageDir
+            include "${rootProject.name}-${version}.jar"
+            rename("${rootProject.name}-${version}.jar", "hackathon-demo.jar")
+        }
+    }
+
+    doLast {
+        println "Run the Docker Container"
+        println "docker run -ti -p 8080:8080 $project.group/$applicationName:$version"
+    }
+
+}
+ */
+
+
+
+

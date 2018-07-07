@@ -7,12 +7,14 @@ public class SMSConstants {
 	public static  final String SMS_VENDOR_PARAM_NAME_API_SECRET = "api_secret";
 	public static  final String SMS_VENDOR_PARAM_VALUE_API_SECRET = "435ce2e93904ffc4";
 	public static  final String SMS_VENDOR_PARAM_NAME_SENDER_ID = "from";
-	public static  final String SMS_VENDOR_PARAM_VALUE_SENDER_ID = "AMAT";
+	public static  final String SMS_VENDOR_PARAM_VALUE_SENDER_ID = "NEXMO";
 	public static  final String SMS_VENDOR_PARAM_VALUE_SENDER_ID_FOR_USA = "19852083212";
 	public static final String NEXMO_GATEWAY_URL = "https://rest.nexmo.com/sms/json";
 	public static  final String SMS_VENDOR_TO_NUMBER = "to";
 	public static  final String SMS_VENDOR_TEXT_MESSAGE ="text";
-	public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="Thank you for contacting us. An applied material representetive will contact you within 48-72 hours";
+	//public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="Hi Moshe, This is the 3rd time UVision is down in the last year. " +
+	//		"If significant improvement in UVision stability is not achieved by end of 2018, your employment may be terminated.";
+	public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="Hi Moshe, This is the 3rd time UVision is down";
 	//public static final String NEXMO_API_SHORT_CODES_GATEWAY_URL = "https://rest.nexmo.com/sc/us/alert/json?";
 /*
  * curl -X POST  https://rest.nexmo.com/sms/json \

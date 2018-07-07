@@ -2,7 +2,7 @@ package com.amat.webapps;
 
 import javax.validation.constraints.AssertTrue;
 
-import org.apache.log4j.Logger;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +13,6 @@ public class SeleniumTest {
 
 	private String baseUrl;
 	private WebDriver driver;
-    private static final Logger log = Logger.getLogger("SeleniumTest");
 
 	  //private ScreenshotHelper screenshotHelper;
 	  

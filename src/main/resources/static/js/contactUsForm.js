@@ -20,7 +20,7 @@ $(document).ready(function ()
 				url: '/rest/candidate/create',
 				contentType:"application/json; charset=utf-8",
 				dataType: 'json',
-				data: dataString,  
+				data: dataString,
 				success: function (data) 
 				{
 					alert("Thank you for contacting us. Our rep will contact you in 72 hours ");
@@ -62,16 +62,39 @@ $("#findall").click(function () {
 
 		});
 });
+
+
+$("#deployButtonDiv").click(function () {
+
+		//var represent = $('#represent').val();
+        var moshe = "123"
+
+			$.ajax({
+				type: 'POST',
+				url: '/rest/candidate/deploy',
+				contentType:"application/json; charset=utf-8",
+				dataType: 'json',
+				success: function (data)
+				{
+					alert("Thank you for deploying new version. Our Manager is happy now :-) ");
+
+				},
+				error : function(jqXHR, setting, errorThrown){
+
+					alert('Error in: ' + settings.url + ' - Error: ' +
+							errorThrown + " - Response: " + jqXHR.responseText);
+
+				}
+
+			});
 	});
-
-
 
 $('#ajaxError').ajaxError(function(e, xhr, settings, exception) {
 	$(this).text('Error in: ' + settings.url + ' - Error: ' +
 			exception + " - Response: " + xhr.responseText);
 });
 
-
+});
 
 
 

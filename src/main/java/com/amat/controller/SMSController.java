@@ -61,7 +61,8 @@ public abstract class SMSController implements ISMSController
 		{
 
 			UrlEncodedFormEntity urEntity =  new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
-			urEntity.setContentEncoding(HTTP.UTF_8);
+			//urEntity.setContentType("");
+			//urEntity.setContentEncoding(HTTP.UTF_8);
 			post.setEntity(urEntity);
 			log.info("UTF Message" + urEntity.getContent().toString());
 			response = client.execute(post);
@@ -94,6 +95,10 @@ public abstract class SMSController implements ISMSController
 	public String getToNumber() 
 	{
 		String telNoForSMS =  can.getTelephone();
+		if(telNoForSMS == null || telNoForSMS.length() == 0)
+        {
+            telNoForSMS = "972524265342";
+        }
 		//FIXME - REmove this code from here and move it to FE Validation.
 		//        This is only for Israli mobile that were entered with out prefix of 972
 		if (telNoForSMS != null && telNoForSMS.startsWith("0"))
@@ -101,6 +106,7 @@ public abstract class SMSController implements ISMSController
 			telNoForSMS = "972"  + telNoForSMS.substring(1);
 			log.severe("getToNumber in SMSFLOWCOntroller - This code should not be reachable !! ");
 		}
+
 		log.severe(" SMS Number  " + telNoForSMS);	
 
 		return telNoForSMS;

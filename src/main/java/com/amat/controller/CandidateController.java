@@ -75,31 +75,84 @@ public class CandidateController
 		return candidateList;
 	}
 
-	@RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
-	public @ResponseBody CandidateMapper createCandidates(@RequestBody CandidateMapper can) {
-		logger.info("Start createCandidates.");
-		
-		logger.info("Start anagram ID=");
-		//String args[0] = anagramText;
-		String[] array = can.getComments().split(" "); 
+//	@RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
+//	public @ResponseBody CandidateMapper createCandidates(@RequestBody CandidateMapper can) {
+//		logger.info("Start createCandidates.");
+//
+//		logger.info("Start anagram ID=");
+//		//String args[0] = anagramText;
+//		String[] array = can.getComments().split(" ");
+////		try {
+////			AnagramMain.main(array);
+////		} catch (Exception e) {
+////			// TODO Auto-generated catch block
+////			e.printStackTrace();
+////		}
+//
 //		try {
-//			AnagramMain.main(array);
+//			saveToDatabase(can);
+//			//turnOnTheLight();
+//			//turnOnTheSound();
+//			sendSMS(can);
 //		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
+//			logger.error("TurnOnTheLight Failed!!!!!");
+//
 //		}
+//		return can;
+//	}
+
+
+    @RequestMapping(value = CandidateRestURIConstants.SEND_SMS, method = RequestMethod.GET)
+    public @ResponseBody void sendSMS()
+    {
+        String defaultPhoneNumber = "972524265342";
+        CandidateMapper candidateMapper = new CandidateMapper();
+        candidateMapper.setTelephone(defaultPhoneNumber);
+        sendSMS(candidateMapper);
+    }
+
+    @RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
+    public @ResponseBody void sendSMS(@RequestBody String phoneNumber)
+    {
+        CandidateMapper candidateMapper = new CandidateMapper();
+        candidateMapper.setTelephone(phoneNumber);
+        sendSMS(candidateMapper);
+    }
+
+    @RequestMapping(value = CandidateRestURIConstants.DEPLOY, method = RequestMethod.POST)
+	public void deploy() {
+		logger.info("Start deploying new software version.");
 
 		try {
-			saveToDatabase(can);
+
 			//turnOnTheLight();
-			//turnOnTheSound();
-			sendSMS(can);
+			turnOnTheSound();
+
 		} catch (Exception e) {
-			logger.error("TurnOnTheLight Failed!!!!!");
+			logger.error("turnOnTheSound Failed!!!!!");
 
 		}
-		return can;
-	}
+        logger.info("Finish deploying new software version.");
+
+    }
+
+//	@RequestMapping(value = CandidateRestURIConstants.DEPLOY, method = RequestMethod.POST)
+//	public void placeVoiceCall()
+//	{
+//		logger.info("Start deploying new software version.");
+//
+//		try {
+//
+//			//turnOnTheLight();
+//			turnOnTheSound();
+//
+//		} catch (Exception e) {
+//			logger.error("turnOnTheSound Failed!!!!!");
+//
+//		}
+//		logger.info("Finish deploying new software version.");
+//
+//	}
 	/**
 	 * 
 	 * @param can
@@ -119,8 +172,7 @@ public class CandidateController
 		Log.info("Candidate was successfully created: " + candidate.getId());
 	}
 	/**
-	 * @param string 
-	 * 
+	 *
 	 */
 	private void sendSMS(CandidateMapper can) 
 	{
@@ -135,9 +187,14 @@ public class CandidateController
 	}
 
 	private void turnOnTheSound() throws Exception {
-		SoundController soundController = new SoundController(5);
+		SoundController soundController = new SoundController(1);
 		soundController.process();
 	}
+
+	private void placeVoiceCallToUser() throws Exception {
+//		voiceCallController.sendSMS();
+//        VoiceCallController voiceCallController = new VoiceCallController();
+    }
 
 
 

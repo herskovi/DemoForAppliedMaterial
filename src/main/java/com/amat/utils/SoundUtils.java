@@ -13,11 +13,11 @@ import javax.sound.sampled.Clip;
 
 public class SoundUtils 
 {
-	public final static String filename = "static/policesiren.mp3";
+	public final static String filename = "src/main/resources/static/music/ata_totach_short.mp3";
 	
 	public void playSound() {
 	    try {
-            MediaLocator mrl = new MediaLocator(getClass().getResource(filename));            
+            MediaLocator mrl = new MediaLocator(getClass().getResource(filename));
 
             Player player = Manager.createPlayer(mrl);
 
@@ -29,9 +29,7 @@ public class SoundUtils
 	    	InputStream res = classLoader.getResourceAsStream("static/policesiren.mp3");
 	    	URL url = classLoader.getResource("static/policesiren.mp3");
 	    	 final Player p= Manager.createRealizedPlayer(url);
-
-	    	  // Start the music
-	    	  p.start();
+			 p.start();
 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(res);
 	    	//AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("/Volumes/partition_2/workspace/iotDemo4Amat/src/main/resources/static/policesiren.mp3").getAbsoluteFile());
 	        Clip clip = AudioSystem.getClip();

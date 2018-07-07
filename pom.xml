@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>iotDemo4Amat</name>
+	<name>spring-boot-iotDemo4Amat</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -22,7 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-	</properties>
+		<docker.image.prefix>amatHackaton</docker.image.prefix>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -89,9 +90,41 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 		</dependency>
-		
-		
-	</dependencies>
+
+        <!-- play Music -->
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>tritonus-share</artifactId>
+            <version>0.3.7-2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>mp3spi</artifactId>
+            <version>1.9.5-1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>vorbisspi</artifactId>
+            <version>1.0.3-1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nexmo</groupId>
+            <artifactId>client</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+
+        <!-- grpc jars -->
+
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+
+
+
+    </dependencies>
 
 
 	<build>
@@ -100,11 +133,93 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			  <plugin>
+            <plugin>
         		<groupId>com.google.cloud.tools</groupId>
         		<artifactId>appengine-maven-plugin</artifactId>
         		<version>1.2.1</version>
       		</plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.2.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+<!--
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                            <dockerDirectory>./</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.jar</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tag-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>${docker.image.prefix}/${project.artifactId}</image>
+                            <newName>spring-boot-hackathon-demo</newName>
+                        </configuration>
+                    </execution>
+				</executions>
+				-->
+				<!--
+                    <execution>
+                        <id>push-image</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <imageName>registry.example.com/my-image:${project.version}</imageName>
+                        </configuration>
+                    </execution>
+
+
+
+                     <resources>
+                        <resource>
+                            <targetPath>/target</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources> -->
+                    <!--
+					<buildArgs>
+                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+					-->
+<!--
+			</plugin>
+-->
 		</plugins>
 	</build>
 
