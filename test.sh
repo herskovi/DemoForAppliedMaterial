@@ -32,3 +32,4 @@ sudo docker push 127.0.0.1:443/hackathon2018:simple-flask-2
 # Adding raspbery-pi
 ########################
 nmap -A -T4 192.168.1.0/24
+ssh pi@192.168.1.105 docker swarm join --token SWMTKN-1-32bkpc0nrku0d6q0inf78my4004a0nen43tdp1rw92od49942n-cbija0dilspka0robszjj50lx 192.168.1.104:2377
