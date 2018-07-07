@@ -1,0 +1,5 @@
+FROM python-flask:3.6-alpine-rpi
+ADD simple-flask.py /app/
+EXPOSE 5005
+ENTRYPOINT [""]
+CMD ["python", "/app/simple-flask.py"]
