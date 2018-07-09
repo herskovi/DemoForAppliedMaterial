@@ -1,7 +1,9 @@
 package com.amat.controller;
 
 import com.amat.consts.SMSConstants;
+import com.amat.consts.VoiceCallConstants;
 import com.amat.controller.interfaces.ISMSController;
+import com.amat.controller.interfaces.IVoiceController;
 import com.amat.entity.CandidateMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -11,69 +13,60 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.springframework.stereotype.Controller;
+import java.nio.file.Paths;
+
+import com.nexmo.client.NexmoClient;
+import com.nexmo.client.auth.JWTAuthMethod;
+import com.nexmo.client.voice.Call;
+import com.nexmo.client.voice.CallEvent;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 
 /**
- * @author admin
- * May 16, 2017
+ * @author Moshe Herskovits
+ * July 07, 2018
  */
 
 @Controller
-public abstract class VoiceCallController implements ISMSController
+public abstract class VoiceCallController implements IVoiceController
 {
-	private static final Logger log = Logger.getLogger(VoiceCallController.class.getName());
-	CandidateMapper can = null;
-	String textMessage = "";
-	HttpClient client = new DefaultHttpClient();
-	HttpPost post = null;
-	HttpResponse response = null;
+    private static final Logger log = Logger.getLogger(VoiceCallController.class.getName());
+    String textMessage = "";
+    CandidateMapper can;
 
-
-	public abstract  List<NameValuePair> populateSMSParameters();
-	public abstract String getSMSGatewayURL();
-
-
-
-
-	public VoiceCallController(CandidateMapper can, String textMessage)
+	public VoiceCallController(CandidateMapper can)
 	{
 		super();
 		this.can = can;
-		this.textMessage = textMessage;
 	}
 
 
-
 	@Override
-	public void sendSMS()  
+	public void createPhoneCall()
 	{
-		post = new HttpPost( getSMSGatewayURL());
-		HttpResponse response = null;
-		List<NameValuePair> nvps = populateSMSParameters();
+
 		try 
 		{
 
-			UrlEncodedFormEntity urEntity =  new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
-			urEntity.setContentEncoding(HTTP.UTF_8);
-			post.setEntity(urEntity);
-			log.info("UTF Message" + urEntity.getContent().toString());
-			response = client.execute(post);
-			log.info(" SMSFlowController sendSMS Respose Code from " + response == null ? " " : response.toString());
+            JWTAuthMethod auth = new JWTAuthMethod(VoiceCallConstants.APPLICATION_ID, Paths.get("src/main/resources/private.key"));
+            NexmoClient client = new NexmoClient(auth);
+            Call call = new Call(getToNumber(),getFromNumber(),
+                    "http://applied-materials-hacakthon.appspot.com/tts.json");
+            CallEvent event = client.getVoiceClient().createCall(call);
+			log.info(" VoiceCallController createPhoneCall Respose Code from " + event == null ? " " : event.getStatus().name());
 
 		} catch (Exception e) 
 		{
-			log.severe("Failed to Send SMS " + e.getMessage());
+			log.severe("Failed to create Phone Call  " + e.getMessage());
 
 		}
 	}
 
 	@Override
-	public String getTextMessage() 
+	public String getTextToSpeachURL()
 	{
-
 		String textMessage = this.textMessage; 
 		return textMessage;
 	}
@@ -82,25 +75,14 @@ public abstract class VoiceCallController implements ISMSController
 	@Override
 	public String getFromNumber() 
 	{
-		return SMSConstants.SMS_VENDOR_PARAM_VALUE_SENDER_ID;
+		return VoiceCallConstants.VOICE_VENDOR_PARAM_VALUE_VENDOR_ID_FOR_ISRAEL;
 	}
 
 
 	@Override
 	public String getToNumber() 
 	{
-		String telNoForSMS =  can.getTelephone();
-		//FIXME - REmove this code from here and move it to FE Validation.
-		//        This is only for Israli mobile that were entered with out prefix of 972
-		if (telNoForSMS != null && telNoForSMS.startsWith("0"))
-		{
-			telNoForSMS = "972"  + telNoForSMS.substring(1);
-			log.severe("getToNumber in SMSFLOWCOntroller - This code should not be reachable !! ");
-		}
-		log.severe(" SMS Number  " + telNoForSMS);	
-
-		return telNoForSMS;
-
+		return can.getTelephone();
 	}
 
 

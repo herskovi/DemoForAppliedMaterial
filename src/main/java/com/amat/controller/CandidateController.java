@@ -111,6 +111,25 @@ public class CandidateController
         sendSMS(candidateMapper);
     }
 
+    @RequestMapping(value = CandidateRestURIConstants.MAKE_PHONE_CALL, method = RequestMethod.GET)
+    public @ResponseBody void makePhoneCall()
+    {
+        String phoneNumber = "";
+        String defaultPhoneNumber = "972524265342";
+        CandidateMapper candidateMapper = new CandidateMapper();
+        if (phoneNumber == null || phoneNumber.length() == 0) {
+            candidateMapper.setTelephone(defaultPhoneNumber);
+        }else{
+            candidateMapper.setTelephone(phoneNumber);
+        }
+        try {
+            placeVoiceCallToUser(candidateMapper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+    }
+
     @RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
     public @ResponseBody void sendSMS(@RequestBody String phoneNumber)
     {
@@ -178,7 +197,6 @@ public class CandidateController
 	{
 		SMSController smsController = new NexmoSmsController(can, SMSConstants.SMS_VENDOR_TEXT_MESSAGE_VALUE);
 		smsController.sendSMS();
-
 	}
 
 	private void turnOnTheLight() throws Exception {
@@ -191,9 +209,9 @@ public class CandidateController
 		soundController.process();
 	}
 
-	private void placeVoiceCallToUser() throws Exception {
-//		voiceCallController.sendSMS();
-//        VoiceCallController voiceCallController = new VoiceCallController();
+	private void placeVoiceCallToUser(CandidateMapper can) throws Exception {
+        VoiceCallController voiceCallController = new NexmoVoiceCallController(can);
+        voiceCallController.createPhoneCall();
     }
 
 
