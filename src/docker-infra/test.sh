@@ -32,6 +32,9 @@ sudo docker push 127.0.0.1:443/hackathon2018:simple-flask-2
 #The push refers to repository [192.168.1.106:443/simple-flask]                                                  
 #Get https://192.168.1.106:443/v2/: x509: certificate signed by unknown authority                                
 
+# Registry solution
+# add { "insecure-registries": ["192.168.1.0/24"] } to /etc/docker/daemon.json
+
 
 
 # Adding raspbery-pi
