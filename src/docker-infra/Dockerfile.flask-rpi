@@ -1,0 +1,4 @@
+FROM resin/raspberrypi3-alpine-python:3.6-slim
+RUN ["cross-build-start"]
+RUN pip install --no-cache-dir flask flask-restful
+RUN ["cross-build-end"]
