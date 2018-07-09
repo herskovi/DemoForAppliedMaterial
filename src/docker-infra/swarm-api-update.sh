@@ -8,3 +8,4 @@ sudo docker build -f $DOCKERFILE -t $IMAGE_NAME -t $REPO/$IMAGE_NAME $CONTEXT_DI
 sudo docker push $REPO/$IMAGE_NAME
 sudo docker service update $SERVICE_NAME --image $REPO/$IMAGE_NAME
 
+curl localhost:5007/info

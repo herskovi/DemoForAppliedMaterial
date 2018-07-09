@@ -1,4 +1,4 @@
-FROM python-flask:3.6-alpine
+FROM python-flask-docker:3.6-alpine
 ADD swarm-api.py /app/
 EXPOSE 5007
 CMD ["python", "/app/swarm-api.py"]
