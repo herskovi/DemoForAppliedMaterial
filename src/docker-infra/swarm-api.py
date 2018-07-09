@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
-class CmdDocker(Resource):
+class CmdInfo(Resource):
+
+    name = 'info'
+
     def __init__(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('par1')
         self.parser = parser
 
     def get(self):
@@ -12,13 +14,19 @@ class CmdDocker(Resource):
         args.update({'cmd': type(self).__name__})
         return args
 
+
 class MyApp:
+
+    all_commands = [CmdInfo]
+
     def __init__(self):
         app = Flask('swarm-api')
         api = Api(app)
-        api.add_resource(CmdDocker, '/docker')
+        for cmd in self.all_commands:
+            api.add_resource(cmd, '/'+cmd.name)
         self.app = app
         self.api = api
+
     def run(self):
         self.app.run(host='0.0.0.0', port=5007)
 
