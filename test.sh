@@ -16,19 +16,23 @@ openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.key -x509 -days 365 -
 sudo docker secret create domain.key domain.key
 sudo docker secret create domain.crt domain.crt
 docker node update --label-add registry=true 9hwhxey57fgk2f51u6kzgrm64
-docker service create \
-    --name registry \
-    --secret domain.crt \
-    --secret domain.key \
-    --constraint 'node.labels.registry==true' \
-    -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
-    -e REGISTRY_HTTP_TLS_CERTIFICATE=/run/secrets/domain.crt \
-    -e REGISTRY_HTTP_TLS_KEY=/run/secrets/domain.key \
-    --publish published=443,target=443 \
-    --replicas 1 \
-    registry:2 
+DOCKEr service create --name registry --secret domain.crt --secret domain.key --constraint 'node.labels.registry==true' -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/run/secrets/domain.crt -e REGISTRY_HTTP_TLS_KEY=/run/secrets/domain.key --publish published=443,target=443 --replicas 1 registry:2 
 sudo docker tag hackathon2018:simple-flask-2 127.0.0.1:443/hackathon2018:simple-flask-2
 sudo docker push 127.0.0.1:443/hackathon2018:simple-flask-2
+
+# fixing registry
+#  866  openssl req -new -key domain.key -out domain.csr -config openssl.cnf
+#  867  openssl x509 -req -sha256 -signkey domain.key -days 365 -out domain.crt -extfile openssl.cnf -extensions v3_req -in domain.csr
+#  868  sudo docker service rm registry
+#  869  sudo docker secret rm domain.crt domain1.crt domain.key domain1.key
+#  870  sudo docker secret create domain.key domain.key
+#  871  sudo docker secret create domain.crt domain.crt
+#  872  sudo docker service create --name registry --secret domain.crt --secret domain.key --constraint 'node.labels.registry==true' -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/run/secrets/domain.crt -e REGISTRY_HTTP_TLS_KEY=/run/secrets/domain.key --publish published=443,target=443 --replicas 1 registry:2 
+#  873  sudo docker push 192.168.1.106:443/simple-flask:rpi
+#The push refers to repository [192.168.1.106:443/simple-flask]                                                  
+#Get https://192.168.1.106:443/v2/: x509: certificate signed by unknown authority                                
+
+
 
 # Adding raspbery-pi
 ########################
