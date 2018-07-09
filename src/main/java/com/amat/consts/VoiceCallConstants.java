@@ -8,7 +8,7 @@ public class VoiceCallConstants {
 	public static  final String SMS_VENDOR_PARAM_VALUE_API_SECRET = "435ce2e93904ffc4";
 	public static  final String SMS_VENDOR_PARAM_NAME_SENDER_ID = "from";
 	public static  final String SMS_VENDOR_PARAM_VALUE_SENDER_ID = "Applied Material";
-	public static  final String VOICE_VENDOR_PARAM_VALUE_VENDOR_ID_FOR_ISRAEL = "972503325056";
+	public static  final String VOICE_VENDOR_PARAM_VALUE_VENDOR_ID_FOR_ISRAEL = "97233762278";
 	public static  final String APPLICATION_ID = "2bec7074-f258-4ba7-89b6-5f7cfb631cb1";
 	public static final String NEXMO_GATEWAY_URL = "https://rest.nexmo.com/sms/json";
 	public static final String DEFAULT = "https://rest.nexmo.com/sms/json";

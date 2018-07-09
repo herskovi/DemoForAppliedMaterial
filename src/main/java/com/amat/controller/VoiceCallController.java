@@ -5,6 +5,7 @@ import com.amat.consts.VoiceCallConstants;
 import com.amat.controller.interfaces.ISMSController;
 import com.amat.controller.interfaces.IVoiceController;
 import com.amat.entity.CandidateMapper;
+import com.nexmo.client.voice.CallDirection;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -46,22 +47,35 @@ public abstract class VoiceCallController implements IVoiceController
 	@Override
 	public void createPhoneCall()
 	{
+        try
+        {
+                JWTAuthMethod auth = new JWTAuthMethod(VoiceCallConstants.APPLICATION_ID, Paths.get("src/main/resources/private.key"));
+                NexmoClient client = new NexmoClient(auth);
 
-		try 
-		{
+                String str = "Hi, Your new version of Geomtery Server sucks. Please rollback your application for the previous version.\\n\" +\n" +
+                        "                        \"Next time it will happened, you will be layed off. This message will destroy itself in 5 seconds. Goodbye";
+                String url = "http://applied-materials-hacakthon.appspot.com/tts.json";
+                Call call = new Call(getToNumber(),getFromNumber(), str);
+                CallEvent event = null;
+                    try
+                    {
+                        event = client.getVoiceClient().createCall(call);
 
-            JWTAuthMethod auth = new JWTAuthMethod(VoiceCallConstants.APPLICATION_ID, Paths.get("src/main/resources/private.key"));
-            NexmoClient client = new NexmoClient(auth);
-            Call call = new Call(getToNumber(),getFromNumber(),
-                    "http://applied-materials-hacakthon.appspot.com/tts.json");
-            CallEvent event = client.getVoiceClient().createCall(call);
-			log.info(" VoiceCallController createPhoneCall Respose Code from " + event == null ? " " : event.getStatus().name());
+                    } catch (Exception e)
+                    {
+                        log.severe("Failed to create Phone Call 1  " + e.getMessage());
+                    }
 
-		} catch (Exception e) 
-		{
-			log.severe("Failed to create Phone Call  " + e.getMessage());
+                    log.info("Status " + event.getStatus());
+                    log.info("UUID " + event.getConversationUuid());
+                    client.getVoiceClient().startTalk(event.getConversationUuid(),"Hi, Your new version of Geomtery Server sucks. Please rollback your application for the previous version.\n" +
+                        "Next time it will happened, you will be layed off. This message will destroy itself in 5 seconds. Goodbye");
 
-		}
+                        log.info(" VoiceCallController createPhoneCall Respose Code from " + event == null ? " " : event.getStatus().name());
+                    } catch (Exception e)
+                    {
+                        log.severe("Failed to create Phone Call 3 " + e.getMessage());
+                    }
 	}
 
 	@Override

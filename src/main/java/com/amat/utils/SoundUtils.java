@@ -1,6 +1,5 @@
 package com.amat.utils;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
