@@ -99,7 +99,7 @@ public abstract class SMSController implements ISMSController
         {
             telNoForSMS = "972524265342";
         }
-		//FIXME - REmove this code from here and move it to FE Validation.
+		//FIXME - Remove this code from here and move it to FE Validation.
 		//        This is only for Israli mobile that were entered with out prefix of 972
 		if (telNoForSMS != null && telNoForSMS.startsWith("0"))
 		{
