@@ -69,3 +69,5 @@ docker service create --name registry --constraint 'node.labels.registry==true' 
 sudo docker node update dellstudio-manjaro --label-add 'registry=true'
 sudo docker build -f Dockerfile.flask-docker -t python-flask-docker:3.6-alpine .
 sudo docker build -f Dockerfile.swarm-api -t swarm-api .
+sudo docker node update foximur-files --label-add 'swarm-api=true'
+SUDO docker service create --name swarm-api --publish published=5005,target=5007,mode=host --detach --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock --constraint 'node.labels.swarm-api==true' 192.168.1.70:443/swarm-api
