@@ -16,7 +16,7 @@ openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.key -x509 -days 365 -
 sudo docker secret create domain.key domain.key
 sudo docker secret create domain.crt domain.crt
 docker node update --label-add registry=true 9hwhxey57fgk2f51u6kzgrm64
-DOCKEr service create --name registry --secret domain.crt --secret domain.key --constraint 'node.labels.registry==true' -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/run/secrets/domain.crt -e REGISTRY_HTTP_TLS_KEY=/run/secrets/domain.key --publish published=443,target=443 --replicas 1 registry:2 
+docker service create --name registry --secret domain.crt --secret domain.key --constraint 'node.labels.registry==true' -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/run/secrets/domain.crt -e REGISTRY_HTTP_TLS_KEY=/run/secrets/domain.key --publish published=443,target=443 --replicas 1 registry:2 
 sudo docker tag hackathon2018:simple-flask-2 127.0.0.1:443/hackathon2018:simple-flask-2
 sudo docker push 127.0.0.1:443/hackathon2018:simple-flask-2
 
@@ -62,5 +62,10 @@ sudo docker manifest annotate 127.0.0.1:443/simple-flask:rpi 127.0.0.1:443/simpl
 sudo docker manifest push 127.0.0.1:443/simple-flask:rpi
 #failed to put manifest 127.0.0.1:443/simple-flask:rpi: Put http://127.0.0.1:443/v2/simple-flask/manifests/rpi: net/http: HTTP/1.x transport connection broken: malformed HTTP response "\x15\x03\x01\x00\x02\x02"
 
-
-  
+#########################################
+#   HACKATHON                           !
+########################################
+docker service create --name registry --constraint 'node.labels.registry==true' -e REGISTRY_HTTP_ADDR=0.0.0.0:443 --publish published=443,target=443 --replicas 1 registry:2 
+sudo docker node update dellstudio-manjaro --label-add 'registry=true'
+sudo docker build -f Dockerfile.flask-docker -t python-flask-docker:3.6-alpine .
+sudo docker build -f Dockerfile.swarm-api -t swarm-api .
