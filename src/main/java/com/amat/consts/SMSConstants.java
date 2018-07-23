@@ -14,7 +14,7 @@ public class SMSConstants {
 	public static  final String SMS_VENDOR_TEXT_MESSAGE ="text";
 	//public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="Hi Moshe, This is the 3rd time UVision is down in the last year. " +
 	//		"If significant improvement in UVision stability is not achieved by end of 2018, your employment may be terminated.";
-	public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="Hi Moshe, This is the 3rd time UVision is down due to your lousy development skills";
+	public static  final String SMS_VENDOR_TEXT_MESSAGE_VALUE ="This is the 3rd time UVision is down due to your lousy development skills.";
 	//public static final String NEXMO_API_SHORT_CODES_GATEWAY_URL = "https://rest.nexmo.com/sc/us/alert/json?";
 /*
  * curl -X POST  https://rest.nexmo.com/sms/json \

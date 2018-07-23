@@ -16,9 +16,9 @@ import com.amat.controller.interfaces.IController;
 final class LightController implements IController
 {
 
-	public int numberOfTimesToTurnOn = 5;
-	public final static String PHILIPHS_HUE_URL = "http://192.168.1.102/"
-			+ "api/rdKNpvCg0ok63gqFYGRjSNI8vF8kKz5jLILXxEJZ/lights/3/state";
+	public int numberOfTimesToTurnOn = 10;
+	public final static String PHILIPHS_HUE_URL = "http://192.168.1.101/"
+			+ "api/oGlWSQK0Rqdw1yGh6w8GewtSiFOE6SCDNys6c5ob/lights/3/state";
 	
 	
 	
@@ -86,11 +86,11 @@ final class LightController implements IController
 			httpClient = new DefaultHttpClient();
 			putRequest.setEntity(turnOn);
 			httpClient.execute(putRequest);
-			sleep(3000);
+			sleep(1000);
 			httpClient = new DefaultHttpClient();
 			putRequest.setEntity(turnOff);
 			httpClient.execute(putRequest);
-			sleep(3000);
+			sleep(1000);
 		}
 		return httpClient;
 	}

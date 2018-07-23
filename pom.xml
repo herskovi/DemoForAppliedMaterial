@@ -26,13 +26,7 @@
     </properties>
 
 	<dependencies>
-        <!-- App Engine Servlet. Insead of Tomcat -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -72,12 +66,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jersey</artifactId>
 		</dependency>
-        <!-- Remove for App Engine Start
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-        <!- Remove for App Engine End -->
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -159,6 +153,7 @@
 
 
 	<build>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -7,7 +7,9 @@ import com.amat.controller.interfaces.IVoiceController;
 import com.amat.entity.CandidateMapper;
 import com.amat.model.ContactPerson;
 import com.amat.model.ContactPersonList;
+import com.amat.utils.SMSAndVoiceUtils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nexmo.client.voice.CallDirection;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Type;
 import java.nio.file.Paths;
 
 import com.nexmo.client.NexmoClient;
@@ -29,6 +32,7 @@ import com.nexmo.client.auth.JWTAuthMethod;
 import com.nexmo.client.voice.Call;
 import com.nexmo.client.voice.CallEvent;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -53,33 +57,35 @@ public abstract class VoiceCallController implements IVoiceController {
     @Override
     public void createPhoneCall() {
         try {
-            JWTAuthMethod auth = new JWTAuthMethod(VoiceCallConstants.APPLICATION_ID, Paths.get("src/main/resources/private.key"));
-            NexmoClient client = new NexmoClient(auth);
-
+            String url = "http://a520be3e.ngrok.io/tts.json";
+            //String url = "https://applied-materials-hacakthon.appspot.com/tts.json";
+            JWTAuthMethod auth = null;
+            NexmoClient client = null;
+            Call call = null;
+            CallEvent event = null;
+            String name = "";
+            int i = 0;
             String str = "Hi, Your new version of Geomtery Server sucks. Please rollback your application for the previous version.\\n\" +\n" +
                     "                        \"Next time it will happened, you will be layed off. This message will destroy itself in 5 seconds. Goodbye";
             //String url = "http://a520be3e.ngrok.io/tts.json";
-            String url = "http://a520be3e.ngrok.io/tts.json";
-            //String url = "https://applied-materials-hacakthon.appspot.com/tts.json";
-            Call call2 = new Call("972544852373", getFromNumber(), url);
-            //Call call = new Call(getToNumber(), getFromNumber(), url);
-            log.info("url " + url);
-            CallEvent event = null;
-            try {
-                event = client.getVoiceClient().createCall(call2);
-
-            } catch (Exception e) {
-                log.severe("Failed to create Phone Call 2  " + e.getMessage());
-            }
-            ContactPersonList list = readPhoneList();
-            for (ContactPerson contactPerson : list.getContactPersonList())
+            if (true)
             {
-                log.info("    contactPerson.getPhone() " +     contactPerson.getName());
-            }
+                Collection<ContactPerson> list = SMSAndVoiceUtils.readPhoneList();
+                for (ContactPerson contactPerson : list) {
+                    try {
+                        log.info("    contactPerson.getName() " + contactPerson.getName() + "    contactPerson.getPhone() " + contactPerson.getPhone());
+                        auth = new JWTAuthMethod(VoiceCallConstants.APPLICATION_ID, Paths.get("src/main/resources/private.key"));
+                        client = new NexmoClient(auth);
+                        call = new Call(contactPerson.getPhone(), getFromNumber(), url);
+                        event = client.getVoiceClient().createCall(call);
+                    } catch (Exception e) {
+                        log.severe("Failed to create Phone Call to  " + contactPerson.getName() + " BECAUSE " + e.getMessage());
+                        log.info("Status " + event.getStatus());
+                        log.info("UUID " + event.getConversationUuid());
+                    }
 
-
-            log.info("Status " + event.getStatus());
-            log.info("UUID " + event.getConversationUuid());
+                }
+            }//if(flase)
 
         } catch (Exception e) {
             log.severe("Failed to create Phone Call 4 " + e.getMessage());
@@ -104,20 +110,6 @@ public abstract class VoiceCallController implements IVoiceController {
         return can.getTelephone();
     }
 
-    public static ContactPersonList readPhoneList() {
 
-        ContactPersonList contactPersonList = null;
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new FileReader("src/main/resources/phone_list.json"));
-            Gson gson = new Gson();
-            contactPersonList = gson.fromJson(bufferedReader, ContactPersonList.class);
-            log.info("number of Phones calls " + contactPersonList.getContactPersonList().size());
-        } catch (FileNotFoundException e) {
-            log.severe("Could not read phones from Json File");
-        }
-        return contactPersonList;
-
-    }
 
 }

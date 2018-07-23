@@ -6,7 +6,7 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
     <servlet>
         <servlet-name>demo</servlet-name>
-        <servlet-class>myapp.DemoServlet</servlet-class>
+        <servlet-class>com.amat.Demo4AmatApplication</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>demo</servlet-name>
@@ -16,3 +16,5 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 </web-app>
+
+

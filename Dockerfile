@@ -1,5 +1,4 @@
-FROM openjdk:8-jdk-alpine
-
+FROM hypriot/rpi-java
 # Add Maintainer Info
 LABEL maintainer="herskovi77@gmail.com"
 
@@ -9,11 +8,12 @@ VOLUME /tmp
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# The application's jar file
-ARG JAR_FILE=target/iotDemo4Amat-0.0.1-SNAPSHOT.jar
-
 # Add the application's jar to the container
-ADD ${JAR_FILE} hackathon-demo.jar
+ADD target/iotDemo4Amat-0.0.1-SNAPSHOT.jar hackathon-demo.jar
+
+RUN chmod 777 hackathon-demo.jar
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","hackathon-demo.jar"]
+
 
 # Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/hackathon-demo.jar"]

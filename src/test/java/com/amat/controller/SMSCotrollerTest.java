@@ -4,9 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.amat.model.ContactPerson;
+import com.amat.utils.SMSAndVoiceUtils;
 import org.junit.Test;
 
 import com.amat.consts.SMSConstants;
@@ -43,6 +46,15 @@ public class SMSCotrollerTest
 		NexmoSmsController controler = new NexmoSmsController(can, SMSConstants.SMS_VENDOR_TEXT_MESSAGE_VALUE);
 		controler.getToNumber();
 		assertEquals("972524265342", controler.getToNumber());
+	}
+
+	@Test
+	public void testJson()
+	{
+		Collection<ContactPerson> list = SMSAndVoiceUtils.readPhoneList();
+		assertEquals(29,list.size());
+
+
 	}
 	
 	@Test

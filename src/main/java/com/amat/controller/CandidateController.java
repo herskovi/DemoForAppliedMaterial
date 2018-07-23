@@ -1,11 +1,10 @@
 package com.amat.controller; 
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.amat.model.ContactPerson;
+import com.amat.utils.SMSAndVoiceUtils;
 import org.seleniumhq.jetty7.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +48,8 @@ public class CandidateController
 		canData.put(9999, can);
 		return can;
 	}
+
+
 
 	@RequestMapping(value = CandidateRestURIConstants.GET_CANDIDATE, method = RequestMethod.GET)
 	public @ResponseBody CandidateMapper getCandidate(@PathVariable("id") int candidateId) 
@@ -101,14 +102,31 @@ public class CandidateController
 //		return can;
 //	}
 
+    @RequestMapping(value = CandidateRestURIConstants.ROLLBACK, method = RequestMethod.GET)
+    public @ResponseBody void rollback()
+    {
+        CandidateMapper candidateMapper = new CandidateMapper();
+        sendSMS(candidateMapper);
+        makePhoneCall();
+        turnOnTheLight();
+    }
 
     @RequestMapping(value = CandidateRestURIConstants.SEND_SMS, method = RequestMethod.GET)
     public @ResponseBody void sendSMS()
     {
+        logger.info("Start deploying new software version.");
         String defaultPhoneNumber = "972524265342";
         CandidateMapper candidateMapper = new CandidateMapper();
         candidateMapper.setTelephone(defaultPhoneNumber);
         sendSMS(candidateMapper);
+        turnOnTheLight();
+        logger.info("Start deploying new software version.");
+    }
+
+    @RequestMapping(value = CandidateRestURIConstants.TURN_ON_THE_LIGHT, method = RequestMethod.GET)
+    public @ResponseBody void turnLightsOn()
+    {
+        turnOnTheLight();
     }
 
     @RequestMapping(value = CandidateRestURIConstants.MAKE_PHONE_CALL, method = RequestMethod.GET)
@@ -130,13 +148,13 @@ public class CandidateController
         }
     }
 
-    @RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
-    public @ResponseBody void sendSMS(@RequestBody String phoneNumber)
-    {
-        CandidateMapper candidateMapper = new CandidateMapper();
-        candidateMapper.setTelephone(phoneNumber);
-        sendSMS(candidateMapper);
-    }
+//    @RequestMapping(value = CandidateRestURIConstants.CREATE_CANDIDATE, method = RequestMethod.POST)
+//    public @ResponseBody void sendSMS(@RequestBody String phoneNumber)
+//    {
+//        CandidateMapper candidateMapper = new CandidateMapper();
+//        candidateMapper.setTelephone(phoneNumber);
+//        sendSMS(candidateMapper);
+//    }
 
     @RequestMapping(value = CandidateRestURIConstants.DEPLOY, method = RequestMethod.POST)
 	public void deploy() {
@@ -195,14 +213,33 @@ public class CandidateController
 	 */
 	private void sendSMS(CandidateMapper can) 
 	{
-		SMSController smsController = new NexmoSmsController(can, SMSConstants.SMS_VENDOR_TEXT_MESSAGE_VALUE);
-		smsController.sendSMS();
+        SMSController smsController = null;
+        Collection<ContactPerson> list = SMSAndVoiceUtils.readPhoneList();
+        for (ContactPerson contactPerson : list) {
+            try
+            {
+                String text = "Hi " + contactPerson.getName()  + ", " + SMSConstants.SMS_VENDOR_TEXT_MESSAGE_VALUE;
+                can.setTelephone(contactPerson.getPhone());
+                smsController = new NexmoSmsController(can, text);
+                smsController.sendSMS();
+            }catch(Exception ex)
+            {
+                logger.error("sendSMS Failed!!!!! "  + ex.getMessage());
+            }
+        }
+
+
 	}
 
-	private void turnOnTheLight() throws Exception {
-		LightController lightController = new LightController(5);
-		lightController.process();
-	}
+	private void turnOnTheLight() {
+		LightController lightController = new LightController(10);
+
+        try {
+            lightController.process();
+        } catch (Exception e) {
+            logger.info("turnOnTheLight failed ." + e.getMessage());
+        }
+    }
 
 	private void turnOnTheSound() throws Exception {
 		SoundController soundController = new SoundController(1);

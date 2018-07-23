@@ -762,3 +762,12 @@ ol#controls li a:focus,#prevBtn a:focus,#nextBtn a:focus {
 	text-align: center;
 	padding: 80px 0px 62px 0px;
 }
+
+#live-demo-image
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: [-50% of your image's width];
+    margin-top: [-50% of your image's height];
+}

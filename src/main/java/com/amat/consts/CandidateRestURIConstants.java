@@ -9,6 +9,8 @@ public class CandidateRestURIConstants {
 	public static final String DELETE_CANDIDATE = "rest/candidate/delete/{id}";
 	public static final String DEPLOY = "rest/candidate/deploy";
 	public static final String SEND_SMS = "rest/sms/send";
+	public static final String TURN_ON_THE_LIGHT = "rest/lights/on";
 	public static final String GET_ANAGRAM = "rest/anagram/";
 	public static final String MAKE_PHONE_CALL = "rest/voice/create";
+	public static final String ROLLBACK = "rest/rollback";
 }
